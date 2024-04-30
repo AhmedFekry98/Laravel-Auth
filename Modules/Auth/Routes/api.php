@@ -26,7 +26,7 @@ Route::group([
 ], function () {
     Route::post('register'             , [AuthController::class, 'register']);
     Route::post('login'                , [AuthController::class, 'login']);
-    Route::post('logout'               , [AuthController::class, 'logOut']); 
+    Route::post('logout'               , [AuthController::class, 'logout'])->middleware('auth:user'); 
 
     Route::post('forgot-password'      , [AuthController::class, 'forgotPassword']);
     Route::post('check-otp'            , [AuthController::class, 'checkOTP']);
