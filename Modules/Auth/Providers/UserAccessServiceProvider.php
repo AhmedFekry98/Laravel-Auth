@@ -7,6 +7,13 @@ use Illuminate\Support\ServiceProvider;
 
 class UserAccessServiceProvider extends ServiceProvider
 {
+    /**
+     * Register services.
+     */
+    public function register()
+    {
+        $this->app->alias(\Modules\Auth\Http\Middleware\RoleCheck::class, 'role');
+    }
 
     /**
      * Bootstrap services.
