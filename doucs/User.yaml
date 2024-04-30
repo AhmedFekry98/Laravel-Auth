@@ -1,0 +1,22 @@
+users_table:
+    columns:
+        - id integer
+        - username string // email|pone|unique-characters
+        - password string
+        - verified_at timestamp|nullable
+        - data json 
+
+user_roles_table:
+    columns:
+        - user_id
+        - role_id
+
+roles_table:
+    columns:
+        - id integer
+        - name string
+        - abilities json/array
+
+
+media_table:
+    name: install media library to add avatar image for user
