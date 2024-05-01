@@ -4,6 +4,9 @@ namespace Modules\Auth\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\Http\Middleware\CheckAbilities;
+use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
+use Modules\Auth\Http\Middleware\RoleCheck;
 
 class UserAccessServiceProvider extends ServiceProvider
 {
@@ -12,7 +15,9 @@ class UserAccessServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->alias(\Modules\Auth\Http\Middleware\RoleCheck::class, 'role');
+        $this->app->alias('abilities', CheckAbilities::class);
+        $this->app->alias('ability', CheckForAnyAbility::class);
+        $this->app->alias(RoleCheck::class, 'role');
     }
 
     /**
@@ -31,7 +36,7 @@ class UserAccessServiceProvider extends ServiceProvider
 
         foreach ($permisions as $ability => $check) {
 
-            if ( $check === null ) {
+            if ($check === null) {
                 $check = fn () => true;
             }
 

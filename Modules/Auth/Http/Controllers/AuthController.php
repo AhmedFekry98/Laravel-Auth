@@ -5,6 +5,7 @@ namespace Modules\Auth\Http\Controllers;
 use App\Traits\ApiResponses;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Auth\Enums\ErrorCode;
 use Modules\Auth\Http\Requests\LoginRequest;
 use Modules\Auth\Http\Requests\RegisterRequest;
 use Modules\Auth\Services\LoginService;
@@ -14,8 +15,8 @@ use Psy\TabCompletion\Matcher\FunctionsMatcher;
 
 class AuthController extends Controller
 {
-   use ApiResponses;
-   public function __construct(
+  use ApiResponses;
+  public function __construct(
     private RegisterService $registerService,
     private LoginService $loginService,
     private LogoutService $logoutService
@@ -26,48 +27,56 @@ class AuthController extends Controller
   # Function Register
   public function register(RegisterRequest $request)
   {
-    try{
-        $user = $this->registerService->register($request);
-        return $this->okResponse(
-            $user, $message = 'User Registered Successfully'
-        );
-    }catch(\Exception $e){
-        return $this->badResponse(
-             $message = $e 
-        );  
+    try {
+      $user = $this->registerService->register($request);
+      return $this->okResponse(
+        $user,
+        $message = 'User Registered Successfully'
+      );
+    } catch (\Exception $e) {
+      return $this->badResponse(
+        $message = $e
+      );
     }
   }
 
   # Fanction Login
   public function login(LoginRequest $request)
   {
-    try{
-        $user =  $this->loginService->login($request);
-        return $this->okResponse(
-            $user, $message = 'Success Login'
-        );
-    }catch(\Exception $e){
-        return $this->badResponse(
-             $message = $e 
-        );
+    $user =  $this->loginService->login($request);
+
+    if (is_int($user) && $user === ErrorCode::INVALID_CREDENTIAL) {
+      return $this->badResponse(
+        $message = $e
+      );
     }
+
+
+    $deviceName = $request->post("device_name", $request->userAgent());
+    $user['token'] = $user->createToken($deviceName)->plainTextToken;
+
+    return $this->okResponse(
+      [
+        'token' =>> $token,
+        'user' => $user
+      ],
+      $message = "loged in"
+    );
   }
 
   # Function Logout
   public function logout(Request $request)
   {
-    try{
+    try {
       $user =  $this->logoutService->logout($request->user());
       return $this->okResponse(
-          $user, $message = 'Success Logout'
-        );
-    }catch(\Exception $e){
-        return $this->badResponse(
-            $message = $e 
-        );
+        $user,
+        $message = 'Success Logout'
+      );
+    } catch (\Exception $e) {
+      return $this->badResponse(
+        $message = $e
+      );
     }
   }
-
-
-
 }
