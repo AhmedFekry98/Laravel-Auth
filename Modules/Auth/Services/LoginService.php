@@ -10,7 +10,8 @@ class LoginService
 {
     private static $models = User::class;
     
-    private $getBy = 'username';
+    private $getBy  = 'username';
+    
 
     public function login($request)
     {
@@ -18,7 +19,8 @@ class LoginService
         $user = self::$models::where($this->getBy,$validated[$this->getBy])->first();
 
         if ($user && Hash::check($validated['password'], $user->password)) {
-            $user['token'] = $user->createToken($this->getBy)->plainTextToken;
+            $deviceName = $request->post("device_name", $request->userAgent());
+            $user['token'] = $user->createToken($deviceName)->plainTextToken;
             return $user;
         }
         throw new \RuntimeException('Invalid Information');
