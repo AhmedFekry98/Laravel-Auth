@@ -53,7 +53,7 @@ class AuthController extends Controller
 
 
     $deviceName = $request->post("device_name", $request->userAgent());
-    $user['token'] = $user->createToken($deviceName)->plainTextToken;
+    $token = $user->createToken($deviceName)->plainTextToken;
 
     return $this->okResponse(
       [
