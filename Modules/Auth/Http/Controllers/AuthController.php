@@ -57,7 +57,7 @@ class AuthController extends Controller
 
     return $this->okResponse(
       [
-        'token' =>> $token,
+        'token' => $token,
         'user' => $user
       ],
       $message = "loged in"
