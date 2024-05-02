@@ -29,7 +29,7 @@ class TDO
      */
     public function toArray(bool $asSnake = false): array
     {
-        return $this->all(bool $asSnake = false);
+        return $this->all($asSnake = false);
     }
 
     /**
