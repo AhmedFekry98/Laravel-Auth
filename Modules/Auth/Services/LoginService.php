@@ -19,7 +19,7 @@ class LoginService
         try {
             $validated = $request->validated();
             $user = self::$models::where($this->getBy, $validated[$this->getBy])->first();
-        } catch (\Throwable $ex) {
+        } catch (\Throwable $e) {
             return ErrorCode::UNSPCIFIED_ERROR;
         }
 

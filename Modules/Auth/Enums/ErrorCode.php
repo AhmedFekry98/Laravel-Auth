@@ -9,5 +9,4 @@ enum ErrorCode
     case ALREADY_EXISTS;
     case INVALID_CREDENTIAL;
     case UNVERIFIED;
-
 }

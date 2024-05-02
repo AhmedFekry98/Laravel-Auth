@@ -28,10 +28,13 @@ class AuthController extends Controller
   public function register(RegisterRequest $request)
   {
     try {
-      $user = $this->registerService->register($request);
+      $user = $this->registerService->register(
+        $request->username,
+        $request->password
+      );
       return $this->okResponse(
         $user,
-        $message = 'User Registered Successfully'
+        $message = __("messages.user_register")
       );
     } catch (\Exception $e) {
       return $this->badResponse(
@@ -47,10 +50,9 @@ class AuthController extends Controller
 
     if (is_int($user) && $user === ErrorCode::INVALID_CREDENTIAL) {
       return $this->badResponse(
-        $message = $e
+        $message = __('errorcode.' . $user )
       );
     }
-
 
     $deviceName = $request->post("device_name", $request->userAgent());
     $token = $user->createToken($deviceName)->plainTextToken;
