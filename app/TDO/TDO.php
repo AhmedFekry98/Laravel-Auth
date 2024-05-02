@@ -2,45 +2,109 @@
 
 namespace App\TDO;
 
-class TDO 
+use App\Exceptions\TDOValidationException;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
+class TDO
 {
-  
+    /**
+     * Initialize new TDO instance.
+     */
     public function __construct(
         protected $data
-    )
-    {}
+    ) {
+    }
 
-    public function toArray()
+    /**
+     * Access data values as proparty.
+     */
+    public function __get($name): mixed
     {
+        return $this->data[$name] ?? null;
+    }
+
+    /**
+     * GEt TDO as array
+     */
+    public function toArray(bool $asSnake = false): array
+    {
+        return $this->all(bool $asSnake = false);
+    }
+
+    /**
+     * Get all data as array.
+     */
+    public function all(bool $asSnake = false): array
+    {
+        if ($asSnake) {
+            return $this->asSnake();
+        }
+
         return $this->data;
+
     }
 
-    public function get($keys)
+    public function get(string $key, callable $callback = fn ($value) => $value): mixed
     {
-  
-        return data_get($this->data,$keys);
-    }
-    
-    public function has($key)
-    {
-        return isset($this->data->$key);
+        $value = $this->only($key);
+
+        if (!$value) {
+            return null;
+        }
+
+        return $callback($validator);
     }
 
+    public function only($keys)
+    {
+
+        return data_get($this->data, $keys);
+    }
+
+    /**
+     * Check key is exist.
+     */
+    public function has(string $key)
+    {
+        return isset($this->data[$key]);
+    }
+
+    /**
+     * Transform data keys to camel case.
+     */
     public function asSnake()
     {
-        return collect($this->data)->reduce(function($data,$value,$key){
-            $data[str($key)->snake()] = $value;
-        },[]);
+        return collect($this->data)->reduce(function ($data, $value, $key) {
+            $data[Str::snake($key)] = $value;
+            return $data;
+        }, []);
     }
 
-    public function all()
+    /**
+     * Check on data in TDO.
+     * 
+     * @param array $rules Array of validation rules.
+     * @throws ?
+     * @return array Return the validation data if not has an eexception
+     */
+    public function check(array $rules): array
     {
-        return $this->data;
-    }
+        // ? data to validate.
+        $data = $this->data;
 
-    public function __get($name)
-    {
-        return $this->data[$name];
-    }
+        // ? create custom validator opject
+        $validator = Validator::make($data, $rules);
 
+        //  ! throw an exception if has validation errror.
+        if ( $validator->fails() ) {
+            throw new TDOValidationException(
+                message: "TDO Validation Error: " . $validator->errors()->first()
+            );
+        }
+
+
+        //  * Return validated data from validatior.
+        return  $validator->validated();
+    }
 }

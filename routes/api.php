@@ -1,5 +1,6 @@
 <?php
 
+use App\TDO\TDO;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,6 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::get('/test', fn () => 'test')
-    ->middleware(['auth:sanctum', 'role:user']);
+Route::get('/test', function() {
+    
+});
