@@ -42,7 +42,6 @@ class TDO
         }
 
         return $this->data;
-
     }
 
     public function get(string $key, ?callable $callback = null): mixed
@@ -101,7 +100,7 @@ class TDO
         $validator = Validator::make($data, $rules);
 
         //  ! throw an exception if has validation errror.
-        if ( $validator->fails() ) {
+        if ($validator->fails()) {
             throw new TDOValidationException(
                 message: "TDO Validation Error: " . $validator->errors()->first()
             );
