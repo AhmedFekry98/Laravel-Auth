@@ -45,12 +45,16 @@ class TDO
 
     }
 
-    public function get(string $key, callable $callback = fn ($value) => $value): mixed
+    public function get(string $key, ?callable $callback = null): mixed
     {
         $value = $this->only($key);
 
         if (!$value) {
             return null;
+        }
+
+        if (!$callback) {
+            return fn ($value) => $value;
         }
 
         return $callback($validator);
