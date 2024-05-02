@@ -2,10 +2,12 @@
 
 namespace Modules\Auth\Http\Requests;
 
+use App\Traits\AsTDO;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
 {
+    use AsTDO;
     /**
      * Get the validation rules that apply to the request.
      *

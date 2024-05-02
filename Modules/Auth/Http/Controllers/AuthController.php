@@ -13,9 +13,12 @@ use Modules\Auth\Services\LogoutService;
 use Modules\Auth\Services\RegisterService;
 use Psy\TabCompletion\Matcher\FunctionsMatcher;
 
+
 class AuthController extends Controller
 {
   use ApiResponses;
+
+
   public function __construct(
     private RegisterService $registerService,
     private LoginService $loginService,
@@ -27,20 +30,16 @@ class AuthController extends Controller
   # Function Register
   public function register(RegisterRequest $request)
   {
-    try {
-      $user = $this->registerService->register(
-        $request->username,
-        $request->password
-      );
+
+
+
+   
+      $user = $this->registerService->register($request->asTDO());
       return $this->okResponse(
         $user,
         $message = __("messages.user_register")
       );
-    } catch (\Exception $e) {
-      return $this->badResponse(
-        $message = $e
-      );
-    }
+
   }
 
   # Fanction Login
