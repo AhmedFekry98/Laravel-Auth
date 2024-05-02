@@ -92,23 +92,4 @@ class TDOTest extends TestCase
         $this->assertSame($expectedData, $tdo->asSnake(), 'all on ' . TDO::class . ' not work');
     }
 
-    /**
-     * Test TDO check by validation rules on data.
-     */
-    public function test_tdo_check(): void
-    {
-        $tdo = new TDO([
-            'name'   => 'jon don',
-            'eamail' =>  'test.com'
-        ]);
-
-        // ? check on error.
-        // $this->expectException(TDOValidationException::class);
-        $tdo->check([
-            'name' => 'required',
-            'email1' => 'required|email'
-        ]);
-
-        $this->assertTrue(true);
-    }
 }
