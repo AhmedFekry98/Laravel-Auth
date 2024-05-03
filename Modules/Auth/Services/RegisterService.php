@@ -14,8 +14,12 @@ class RegisterService
   
     public function register(TDO $tdo) 
     {
-        $user = self::$model::create($tdo->all());
-        return $user;
+        try{
+            $user = self::$model::create($tdo->all());
+            return $user;
+        }catch(\Throwable $e){
+          return ErrorCode::INVALID_CREDENTIAL->name;
+        }
     }  
 
 }
