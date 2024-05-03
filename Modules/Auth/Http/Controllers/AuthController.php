@@ -30,11 +30,17 @@ class AuthController extends Controller
   # Function Register
   public function register(RegisterRequest $request)
   {
+      // dd(ErrorCode::INVALID_CREDENTIAL);
 
-
-
-   
       $user = $this->registerService->register($request->asTDO());
+      
+      if( $user === ErrorCode::INVALID_CREDENTIAL->name){
+        return $this->badResponse(
+          $user,
+          // $message = __("errorcode." . $user) 
+        );
+      }
+
       return $this->okResponse(
         $user,
         $message = __("messages.user_register")

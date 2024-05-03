@@ -3,7 +3,7 @@
 use App\TDO\TDO;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Str;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,6 +20,6 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::get('/test', function() {
-    
+Route::get('/test', function(Request $request) {
+    return Str::snake('firstName');
 });

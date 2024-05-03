@@ -52,11 +52,11 @@ class TDO
             return null;
         }
 
-        if (!$callback) {
-            return fn ($value) => $value;
+        if ($callback) {
+            return $callback($value);
         }
 
-        return $callback($validator);
+        return $value;
     }
 
     public function only($keys)
@@ -105,7 +105,6 @@ class TDO
                 message: "TDO Validation Error: " . $validator->errors()->first()
             );
         }
-
 
         //  * Return validated data from validatior.
         return  $validator->validated();
