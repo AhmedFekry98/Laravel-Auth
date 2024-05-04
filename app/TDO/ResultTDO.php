@@ -2,18 +2,17 @@
 
 namespace App\TDO;
 
-use Modules\Auth\Enums\ErrorCode;
 use Illuminate\Support\Str;
 
-class ServiceTDO
+class ResultTDO
 {
     public function __construct(
         protected mixed $data = null,
-        protected ?ErrorCode $code = null
+        protected mixed $code = null
     ) {
     }
 
-    public function data(): mixed
+    public function data(): mixed 
     {
         return $this->data;
     }

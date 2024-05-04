@@ -9,9 +9,19 @@ class LogoutService
     private static $models = User::class;
     
     public function logout(object $user)
-    {
-       return  $user->currentAccessToken()
+    {      
+
+    try {
+        $deleted =  $user->currentAccessToken()
         ->delete();
+
+    return $deleted && true;
+
+    }catch (\Throwable $e) {
+        return $e;
+      }
+
+
     }
 
 }

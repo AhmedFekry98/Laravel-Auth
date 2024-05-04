@@ -2,25 +2,30 @@
 
 namespace Modules\Auth\Services;
 
-use App\Core\Service;
+use App\Core\ServiceTDOFactory;
 use App\TDO\TDO;
-use Modules\Auth\Enums\ErrorCode;
+
 use Illuminate\Support\Facades\Hash;
 use Modules\Auth\Entities\User;
 
-class RegisterService extends Service
+class RegisterService
 {
     private static $model = User::class;
-
+    const INVALID_CREDENTIAL =  'invalid_credential';
   
     public function register(TDO $tdo) 
     {
         try{
-            $user = self::$model::create($tdo->all());
+            $data = $tdo->all();
+            $data['password'] = Hash::make($data['password']);
+            $user = self::$model::create($data);
             return $user;
         }catch(\Throwable $e){
-          return $this->error(ErrorCode::INVALID_CREDENTIAL);
+            return $e;
         }
     }  
+
+
+
 
 }

@@ -6,16 +6,24 @@ use App\Exceptions\TDOValidationException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class TDO
+class TDO 
 {
     /**
      * Initialize new TDO instance.
      */
-    public function __construct(
-        protected $data
-    ) {
+    // public function __construct(
+        protected $data;
+    // ) {
+    // }
+    
+    public function make($request)
+    {
+
+        $this->data = $request->validated();
+        return $this;
     }
 
+    
     /**
      * Access data values as proparty.
      */

@@ -31,7 +31,7 @@ Route::group([
     Route::post('forgot-password'      , [AuthController::class, 'forgotPassword']);
     Route::post('check-otp'            , [AuthController::class, 'checkOTP']);
     Route::post('reset-password'       , [AuthController::class, 'resetPassword']);
-    Route::post('change-password'      , [AuthController::class, 'updatePassword'])->middleware('auth:user,admin,social'); 
+    Route::post('change-password'      , [AuthController::class, 'changePassword'])->middleware("auth:user"); 
 
 });
 
