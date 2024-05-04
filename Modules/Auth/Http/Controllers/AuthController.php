@@ -9,15 +9,19 @@ use App\Traits\ApiResponses;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Auth\Enums\ErrorCode;
+use Modules\Auth\Http\Requests\ChangePasswordRequest;
 use Modules\Auth\Http\Requests\CheckOtpRequest;
 use Modules\Auth\Http\Requests\ForgotPasswordRequest;
 use Modules\Auth\Http\Requests\LoginRequest;
 use Modules\Auth\Http\Requests\RegisterRequest;
+use Modules\Auth\Http\Requests\ResetPasswordRequest;
+use Modules\Auth\Services\ChangePasswordService;
 use Modules\Auth\Services\CheckOtpService;
 use Modules\Auth\Services\ForgotPasswordService;
 use Modules\Auth\Services\LoginService;
 use Modules\Auth\Services\LogoutService;
 use Modules\Auth\Services\RegisterService;
+use Modules\Sanctum\Services\ResetPasswordService;
 use PharIo\Manifest\Email;
 use Psy\TabCompletion\Matcher\FunctionsMatcher;
 use Psy\VersionUpdater\Checker;
@@ -33,6 +37,8 @@ class AuthController extends Controller
     private LogoutService $logoutService,
     private ForgotPasswordService  $forgotPasswordService,
     private CheckOtpService   $CheckOtpService,
+    private ResetPasswordService $resetPasswordService,
+    private ChangePasswordService $changePasswordService
 
   ) {
   }
@@ -112,23 +118,51 @@ class AuthController extends Controller
 
   } 
 
-  # Function check-otp
-  public function checkOtp(CheckOtpRequest $request)
-  {
-    $otp = $this->CheckOtpService->checkOtp(TDOFacade::make($request));
-    return $otp;
-  }
+  // # Function check-otp
+  // public function checkOtp(CheckOtpRequest $request)
+  // {
+  //   $otp = $this->CheckOtpService->checkOtp(TDOFacade::make($request));
+  //   return $otp;
+  // }
 
   # reset-password
-  public function resetPassword()
+  public function resetPassword(ResetPasswordRequest $request)
   {
+    $user = $this->resetPasswordService->resetPassword(TDOFacade::make($request));
+
+    if($user == 'expird'){
+      return $this->badResponse(
+        $message = __("error_messages.expird_resettoken")
+      );
+    }
+
+    if($user->errorInfo ?? null || !$user){
+      return $this->badResponse(
+        $message = __("error_messages.user_resetpassword")
+      );
+    }
+
+    return $this->okResponse(
+      $message = __('success_messages.user_resetpassword')
+    );
 
   }  
   
   # change-password
 
-  public function changePassword()
+  public function changePassword(ChangePasswordRequest $request)
   {
+    $user = $this->changePasswordService->changePassword(TDOFacade::make($request));
+
+    if($user->errorInfo ?? null || !$user){
+      return $this->badResponse(
+        $message = __("error_messages.change_password")
+      );
+    }
+    return $this->okResponse(
+      $user,
+      $message = __('success_messages.change_password')
+    );
 
   }
 

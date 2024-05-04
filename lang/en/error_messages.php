@@ -3,8 +3,11 @@
 
 
 return [
-    'user_register'         =>   "invalid credentials",
-    'user_login'            =>   "invalid Login",
-    'user_logout'           =>   "invalid Logout",
-    'user_forgotpassword'   =>   "invalid email :email_otp_forgot"
+    'user_register'         =>   "Invalid Credentials",
+    'user_login'            =>   "Invalid Login",
+    'user_logout'           =>   "Invalid Logout",
+    'user_forgotpassword'   =>   "Invalid Email :email_otp_forgot",
+    'expird_resettoken'     =>   "Expird Token",
+    'user_resetpassword'    =>   "Invalid Reset Password",
+    'change_password'       =>   "Invalid Change Password",   
 ];
