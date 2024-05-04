@@ -9,4 +9,5 @@ return [
     ErrorCode::ALREADY_EXISTS     =>  "Already exists",
     ErrorCode::INVALID_CREDENTIAL =>  "Invalid credentials",
     ErrorCode::UNVERIFIED         =>  "Unverified", 
+    'user' => 'invild user'
 ];

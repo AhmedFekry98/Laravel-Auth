@@ -22,7 +22,7 @@ class ServiceTDO
     {
         return $this->code && $this->data == null
             ? true
-            : false;
+            : false;    
     }
 
     public function errorMessage(): string
