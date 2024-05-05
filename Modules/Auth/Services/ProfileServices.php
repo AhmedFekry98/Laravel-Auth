@@ -18,7 +18,7 @@ class ProfileServices
     public function getOne()
     {
         try{
-            $profile = Auth::user();
+            $profile = Auth::user(); // ! user most be given as an external parameter.
             return $profile;
         }catch(\Throwable $e){
             return $e;
@@ -30,7 +30,7 @@ class ProfileServices
     public function update(TDO $tdo)
     {
         try{
-            $user = Auth::user();
+            $user = Auth::user(); // ! user most be given as an external prameter
             $profile = $user->update($tdo->all());
             return $this->getOne();
         }catch(\Throwable $e){

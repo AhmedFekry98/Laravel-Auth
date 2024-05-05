@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Sanctum\Services;
+namespace Modules\Auth\Services;
 
 use App\TDO\TDO;
 use Illuminate\Support\Facades\Hash;
