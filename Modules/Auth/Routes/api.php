@@ -40,5 +40,6 @@ Route::group([
     'prefix' => 'profile',
 ], function () {
     Route::get('/'                             , [ProfileController::class, 'index']);
+    Route::get('-edit'                         , [ProfileController::class, 'edit']);
     Route::get('-update'                       , [ProfileController::class, 'update']);
 });
