@@ -20,6 +20,7 @@ use Modules\Auth\Services\LoginService;
 use Modules\Auth\Services\LogoutService;
 use Modules\Auth\Services\RegisterService;
 use Modules\Auth\Services\ResetPasswordService;
+use Modules\Auth\Transformers\UserResource;
 use PharIo\Manifest\Email;
 
 class AuthController extends Controller
@@ -50,8 +51,14 @@ class AuthController extends Controller
       );
     }
 
+    $deviceName = $request->post("device_name", $request->userAgent());
+    $token = $user->createToken($deviceName);
+
     return $this->okResponse(
-      $user,
+      [
+        'token' => $token->plainTextToken,
+        'data'  => UserResource::make($user)
+      ],
       $message = __("success_messages.user_register")
     );
   }
@@ -66,12 +73,14 @@ class AuthController extends Controller
         $message = __("error_messages.user_login")
       );
     }
+
     $deviceName = $request->post("device_name", $request->userAgent());
     $token = $user->createToken($deviceName)->plainTextToken;
+
     return $this->okResponse(
       [
         'token' => $token,
-        'user' => $user
+        'data'  => UserResource::make($user)
       ],
       $message = __("success_messages.user_login")
     );

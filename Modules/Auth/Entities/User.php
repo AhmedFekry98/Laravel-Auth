@@ -6,15 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Psy\CodeCleaner\AssignThisVariablePass;
 
 class User extends Authenticatable
 {
-    use HasFactory , HasApiTokens;
+    use HasFactory, HasApiTokens;
 
     protected $fillable = [
         'username',
         'password',
-        'verified_at',
+        // 'verified_at', // ! this private table column.
+        'extra',
     ];
 
     protected $hidden = [
@@ -22,15 +24,24 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
-        'password' => 'hashed',
+        'password'    => 'hashed',
+        'verified_at' => 'datetime',
+        'extra'       => 'array'
     ];
-    
+
+    public function  getIsVerifiedAttribute(): bool
+    {
+        return $this->verified_at
+            ? true
+            :  false;
+    }
+
     protected static function newFactory()
     {
         return \Modules\Auth\Database\factories\UserFactory::new();
     }
 
-    
+
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_roles',  'role_id');
@@ -46,5 +57,4 @@ class User extends Authenticatable
             ? []
             : $role->abilities;
     }
-
 }
