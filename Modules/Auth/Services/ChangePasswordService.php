@@ -3,7 +3,7 @@
 
 namespace Modules\Auth\Services;
 
-use App\TDO\TDO;
+use Graphicode\Standard\TDO\TDO;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 

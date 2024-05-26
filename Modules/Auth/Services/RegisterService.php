@@ -3,7 +3,7 @@
 namespace Modules\Auth\Services;
 
 use App\Core\ServiceTDOFactory;
-use App\TDO\TDO;
+use Graphicode\Standard\TDO\TDO;
 
 use Illuminate\Support\Facades\Hash;
 use Modules\Auth\Entities\User;
@@ -15,6 +15,7 @@ class RegisterService
 
     public function register(TDO $tdo)
     {
+
         try {
             $username = $tdo->username;
             $password = Hash::make($tdo->password);
@@ -31,8 +32,10 @@ class RegisterService
             ];
 
             $user = self::$model::create($data);
+            $user->assignRole('admin');
             return $user;
         } catch (\Throwable $e) {
+            // dd($e::class);
             return $e;
         }
     }

@@ -2,7 +2,7 @@
 
 
 namespace Modules\Auth\Services;
-use App\TDO\TDO;
+use Graphicode\Standard\TDO\TDO;
 use Illuminate\Support\Str;
 use Modules\Auth\Entities\OtpPassword;
 

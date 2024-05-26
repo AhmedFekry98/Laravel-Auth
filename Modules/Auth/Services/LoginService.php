@@ -2,7 +2,7 @@
 
 namespace Modules\Auth\Services;
 
-use App\TDO\TDO;
+use Graphicode\Standard\TDO\TDO;
 use Illuminate\Support\Facades\Hash;
 use Modules\Auth\Entities\User;
 use Modules\Auth\Enums\ErrorCode;
